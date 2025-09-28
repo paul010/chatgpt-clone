@@ -1,103 +1,122 @@
-import Image from "next/image";
+'use client'
+
+import { useEffect, useRef } from 'react'
+import { useChat } from 'ai/react'
+import { Loader2, SendHorizontal } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Textarea } from '@/components/ui/textarea'
+import { cn } from '@/lib/utils'
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    error,
+  } = useChat({ api: '/api/chat' })
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const lastMessageRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [messages])
+
+  return (
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
+      <header className="border-b bg-background/80 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-2 px-6 py-6 sm:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            chatgpt clone
+          </p>
+          <div>
+            <h1 className="text-2xl font-bold sm:text-3xl">Conversational Playground</h1>
+            <p className="text-sm text-muted-foreground sm:text-base">
+              Powered by Next.js, Tailwind CSS, shadcn/ui, and the Vercel AI SDK.
+            </p>
+          </div>
         </div>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-3xl grow flex-col px-4 pb-24 pt-6 sm:px-8">
+        <ScrollArea className="h-full rounded-lg border bg-card shadow-sm">
+          <div className="flex min-h-full flex-col gap-4 px-4 py-6">
+            {messages.length === 0 ? (
+              <div className="flex grow flex-col items-center justify-center gap-3 text-center text-muted-foreground">
+                <p className="text-base font-medium">Start a conversation</p>
+                <p className="max-w-xs text-sm">
+                  Ask a question or describe a task to see the assistant respond in real time.
+                </p>
+              </div>
+            ) : (
+              messages.map((message, index) => {
+                const isLast = index === messages.length - 1
+                return (
+                  <div
+                    key={message.id}
+                    ref={isLast ? lastMessageRef : null}
+                    className={cn(
+                      'flex w-full flex-col gap-1 rounded-lg px-4 py-3 text-sm shadow-sm transition-colors',
+                      message.role === 'user'
+                        ? 'ml-auto max-w-[85%] bg-primary text-primary-foreground'
+                        : 'mr-auto max-w-[90%] bg-muted text-foreground'
+                    )}
+                  >
+                    <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground/70">
+                      {message.role === 'user' ? 'You' : 'Assistant'}
+                    </span>
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
+                  </div>
+                )
+              })
+            )}
+            {error ? (
+              <p className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+                {error.message ?? 'Something went wrong. Please try again.'}
+              </p>
+            ) : null}
+          </div>
+        </ScrollArea>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+      <form
+        onSubmit={handleSubmit}
+        className="fixed bottom-0 left-0 right-0 border-t bg-background/80 backdrop-blur"
+      >
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 py-6 sm:px-8">
+          <Textarea
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Type your message..."
+            className="min-h-[120px] resize-none text-base"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs text-muted-foreground">
+              Your messages are processed using the OpenAI API. Remember to set the OPENAI_API_KEY.
+            </p>
+            <Button
+              type="submit"
+              disabled={isLoading || input.trim().length === 0}
+              className="self-end sm:self-auto"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Generating
+                </>
+              ) : (
+                <>
+                  <SendHorizontal className="size-4" />
+                  Send
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      </form>
     </div>
-  );
+  )
 }
