@@ -1,0 +1,144 @@
+# Enhanced Workflow Init - Initial Project Setup (Enhanced Version)
+name: workflow-init-enhanced
+description: "Enhanced initialization with intelligent project analysis, modern tool detection, and smart recommendations"
+author: "BMad Enhanced"
+version: "2.0"
+
+# Critical variables from config (enhanced)
+config_source: "{project-root}/.bmad/bmm/config.yaml"
+output_folder: "{config_source}:output_folder"
+ephemeral_location: "{config_source}:dev_ephemeral_location"
+user_name: "{config_source}:user_name"
+project_name: "{config_source}:project_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+user_skill_level: "{config_source}:user_skill_level"
+date: system-generated
+
+# Workflow components (enhanced)
+installed_path: "{project-root}/.bmad/bmm/workflows/workflow-status/init"
+instructions: "{installed_path}/enhanced-instructions.md"
+template: "{project-root}/.bmad/bmm/workflows/workflow-status/workflow-status-template.yaml"
+
+# Path data files (enhanced)
+path_files: "{project-root}/.bmad/bmm/workflows/workflow-status/paths/"
+
+# Enhanced analysis components
+project_analyzer: "{installed_path}/project-analyzer.js"
+intelligence_engine: "{installed_path}/intelligence-engine.js"
+recommendation_system: "{installed_path}/recommendation-system.js"
+config_validator: "{config_validator}"
+
+# Output configuration
+default_output_file: "{output_folder}/bmm-workflow-status.yaml"
+enhanced_output_file: "{output_folder}/bmm-workflow-status-enhanced.yaml"
+analysis_report_file: "{output_folder}/project-analysis-report.md"
+
+# Enhanced features
+features:
+  intelligent_detection: true
+  modern_tool_recognition: true
+  smart_recommendations: true
+  confidence_scoring: true
+  enhanced_ux: true
+  configuration_validation: true
+  error_recovery: true
+  project_intelligence: true
+
+# Enhanced scanning patterns
+scan_patterns:
+  modern_frameworks:
+    - "package.json:react"
+    - "package.json:vue"
+    - "package.json:angular"
+    - "package.json:next"
+    - "package.json:nuxt"
+    - "package.json:svelte"
+    - "go.mod:gin"
+    - "go.mod:fiber"
+    - "requirements.txt:django"
+    - "requirements.txt:flask"
+    - "pom.xml:spring"
+    - "Cargo.toml:tokio"
+  
+  modern_tools:
+    - "package.json:typescript"
+    - "package.json:eslint"
+    - "package.json:prettier"
+    - "jest.config.*"
+    - "cypress.json"
+    - "playwright.config.*"
+    - "docker-compose.yml"
+    - "Dockerfile"
+    - ".github/workflows/*"
+    - "vite.config.*"
+    - "webpack.config.*"
+  
+  enterprise_features:
+    - "kubernetes/"
+    - "helm/"
+    - "prometheus.yml"
+    - "grafana/"
+    - "terraform/"
+    - "ansible/"
+    - "jenkinsfile"
+    - ".snyk"
+    - "dependency-check-config.xml"
+
+# Confidence scoring weights
+confidence_weights:
+  high_confidence_patterns:
+    - prd_and_architecture: 95
+    - tech_spec_only: 90
+    - security_docs: 90
+    - enterprise_tools: 85
+  
+  medium_confidence_patterns:
+    - prd_only: 80
+    - complex_codebase: 75
+    - modern_tool_stack: 70
+  
+  low_confidence_patterns:
+    - simple_enhancement: 60
+    - unclear_indicators: 50
+
+# Recommendation engine configuration
+recommendation_engine:
+  complexity_scoring:
+    file_count_threshold: 1000
+    dependency_threshold: 20
+    module_count_threshold: 5
+  
+  maturity_levels:
+    basic:
+      indicators: ["framework", "basic_testing"]
+      complexity_multiplier: 0.7
+    advanced:
+      indicators: ["modern_tooling", "ci_cd", "advanced_testing"]
+      complexity_multiplier: 1.0
+    enterprise:
+      indicators: ["devops", "monitoring", "security", "compliance"]
+      complexity_multiplier: 1.3
+
+# User experience enhancements
+ux_enhancements:
+  progressive_disclosure: true
+  contextual_help: true
+  smart_defaults: true
+  confidence_indicators: true
+  error_recovery_suggestions: true
+  progress_indicators: true
+
+# Configuration validation rules
+validation_rules:
+  required_paths:
+    - "{project-root}/.bmad/bmm/config.yaml"
+  output_folder_requirements:
+    - writable: true
+    - min_free_space_mb: 100
+  ephemeral_location_requirements:
+    - accessible: true
+    - temp_writable: true
+
+standalone: true
+enhanced_mode: true

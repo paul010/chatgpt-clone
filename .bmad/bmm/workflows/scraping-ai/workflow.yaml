@@ -1,0 +1,114 @@
+hatgpt-clone/.bmad/bmm/workflows/scraping-ai/workflow.yaml</path>
+<content"># BMad Method - Scraping AI Workflow
+# AI-powered web scraping and content analysis workflow
+name: scraping-ai
+description: "Intelligent web scraping with AI-enhanced content extraction and analysis"
+author: "BMad Enhanced"
+version: "1.0.0"
+
+# Workflow configuration
+config_source: "{project-root}/.bmad/bmm/config.yaml"
+output_folder: "{config_source}:output_folder"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+
+# Workflow components
+installed_path: "{project-root}/.bmad/bmm/workflows/scraping-ai"
+instructions: "{installed_path}/instructions.md"
+scraping_engine: "{installed_path}/scraping-engine.js"
+
+# Input/output configuration
+input_schema:
+  url:
+    type: string
+    required: true
+    description: "Target URL to scrape"
+  config:
+    type: object
+    required: false
+    description: "Scraping configuration options"
+    properties:
+      timeout:
+        type: number
+        default: 10000
+        description: "Request timeout in milliseconds"
+      extractMode:
+        type: string
+        enum: ["text", "html", "structured"]
+        default: "text"
+        description: "Content extraction mode"
+      aiPrompts:
+        type: array
+        items:
+          type: string
+        default: []
+        description: "AI processing prompts"
+
+output_schema:
+  success:
+    type: boolean
+    description: "Whether scraping was successful"
+  content:
+    type: string
+    description: "Extracted content"
+  metadata:
+    type: object
+    properties:
+      title: string
+      description: string
+      images: array
+      links: array
+      timestamp: string
+  structuredData:
+    type: object
+    description: "Structured data if extractMode is 'structured'"
+  error:
+    type: string
+    description: "Error message if failed"
+
+# Workflow metadata
+tags:
+  - scraping
+  - ai
+  - web
+  - content-extraction
+  - data-analysis
+
+category: "data-processing"
+complexity: "moderate"
+estimated_time: "5-15 minutes"
+agent: "analyst"
+
+# Dependencies
+requirements:
+  - node-fetch or similar HTTP client
+  - HTML parsing capabilities
+  - Basic regex processing
+
+# Integration points
+integrates_with:
+  - web-search
+  - content-analysis
+  - data-processing
+
+# Usage examples
+examples:
+  - name: "Basic Website Scraping"
+    input:
+      url: "https://example.com"
+      config:
+        extractMode: "text"
+  - name: "Structured Data Extraction"
+    input:
+      url: "https://example.com"
+      config:
+        extractMode: "structured"
+        aiPrompts: ["extract_key_points"]
+  - name: "Content with AI Enhancement"
+    input:
+      url: "https://example.com"
+      config:
+        extractMode: "text"
+        aiPrompts: ["summarize", "extract_key_points"]
+
+standalone: true
